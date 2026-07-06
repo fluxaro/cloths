@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STYLISHIVE — Unleash Your Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            bg: '#FFFFFF',
+            surface: '#FAFAFA',
+            'surface-alt': '#F5F5F5',
+            border: '#E5E5E5',
+            'text-primary': '#18181B',
+            'text-muted': '#71717A',
+            accent: '#18181B',
+          },
+          borderRadius: {
+            DEFAULT: '8px',
+            sm: '6px',
+            lg: '12px',
+            xl: '16px',
+          },
+          boxShadow: {
+            float: '0 4px 16px rgba(0, 0, 0, 0.08)',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition-duration: 0.01ms !important; }
+    }
+    .avatar-stack > *:not(:first-child) { margin-left: -10px; }
+    .line-clamp-1 {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    #cart-panel { transition: transform 200ms ease-out; }
+    #cart-overlay { transition: opacity 200ms ease-out; }
+    #mobile-menu { transition: transform 200ms ease-out; }
+    .product-card img { transition: transform 300ms ease-out; }
+    .product-card:hover img { transform: scale(1.03); }
+    .category-card img { transition: transform 400ms ease-out; }
+    .category-card:hover img { transform: scale(1.05); }
+    .hero-main-img { transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .hero-card:hover .hero-card-img { transform: scale(1.04); }
+    .hero-card-img { transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1); }
+  </style>
+</head>
+<body class="font-sans bg-bg text-text-primary antialiased">
+
+  <!-- Top utility bar -->
+  <div class="hidden md:block border-b border-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-9 text-xs text-text-muted">
+        <div class="flex items-center gap-6">
+          <a href="#about" class="hover:text-text-primary transition-colors duration-150">About Us</a>
+          <a href="#blog" class="hover:text-text-primary transition-colors duration-150">Blog</a>
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="#shop" class="hover:text-text-primary transition-colors duration-150">Shop</a>
+          <a href="#help" class="hover:text-text-primary transition-colors duration-150">Help</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main header -->
+  <header class="sticky top-0 z-40 bg-bg/95 backdrop-blur-sm border-b border-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Search (desktop) -->
+        <button id="search-toggle" class="hidden md:flex items-center gap-2 text-text-muted hover:text-text-primary transition-colors duration-150" aria-label="Search">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+          <span class="text-sm">Search</span>
+        </button>
+
+        <!-- Logo -->
+        <a href="#" class="text-lg sm:text-xl font-semibold tracking-[0.2em] uppercase">STYLISHIVE</a>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-3 sm:gap-4">
+          <button class="hidden sm:block p-2 text-text-muted hover:text-text-primary transition-colors duration-150" aria-label="Account">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg>
+          </button>
+          <button id="cart-toggle" class="relative p-2 text-text-muted hover:text-text-primary transition-colors duration-150" aria-label="Shopping bag">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 0 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/></svg>
+            <span id="cart-badge" class="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full hidden"></span>
+            <span id="cart-count" class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 bg-accent text-white text-[10px] font-medium rounded-full flex items-center justify-center hidden">0</span>
+          </button>
+          <button id="menu-toggle" class="md:hidden p-2 text-text-muted hover:text-text-primary transition-colors duration-150" aria-label="Menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search bar -->
+      <div id="search-bar" class="pb-4 hidden">
+        <div class="flex items-center border border-border rounded-full overflow-hidden bg-surface">
+          <select id="search-category" class="text-sm text-text-muted bg-transparent border-r border-border px-4 py-3 outline-none cursor-pointer">
+            <option value="all">Clothing</option>
+            <option value="men">Men</option>
+            <option value="women">Women</option>
+            <option value="kids">Kids</option>
+          </select>
+          <input id="search-input" type="search" placeholder="Search products..." class="flex-1 px-4 py-3 text-sm bg-transparent outline-none placeholder:text-text-muted" />
+          <button id="search-btn" class="px-4 py-3 text-text-muted hover:text-text-primary transition-colors duration-150">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Category nav -->
+      <nav class="hidden md:flex items-center justify-center gap-8 pb-4 text-sm text-text-muted">
+        <a href="#categories" class="hover:text-text-primary transition-colors duration-150">Clothing</a>
+        <a href="#shop" class="hover:text-text-primary transition-colors duration-150">New Arrivals</a>
+        <a href="#promo" class="hover:text-text-primary transition-colors duration-150">Sales</a>
+        <a href="#shop" data-filter="men" class="nav-filter hover:text-text-primary transition-colors duration-150">Men</a>
+        <a href="#shop" data-filter="women" class="nav-filter hover:text-text-primary transition-colors duration-150">Women</a>
+        <a href="#shop" data-filter="kids" class="nav-filter hover:text-text-primary transition-colors duration-150">Kids</a>
+        <a href="#featured" class="hover:text-text-primary transition-colors duration-150">Brand</a>
+        <a href="#promo" class="hover:text-text-primary transition-colors duration-150">Outlet</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/40 z-50 hidden opacity-0"></div>
+  <aside id="mobile-menu" class="fixed top-0 right-0 h-full w-72 bg-bg z-50 shadow-float translate-x-full">
+    <div class="flex items-center justify-between p-4 border-b border-border">
+      <span class="font-semibold tracking-widest text-sm">MENU</span>
+      <button id="menu-close" class="p-2 text-text-muted hover:text-text-primary" aria-label="Close menu">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <nav class="p-4 flex flex-col gap-1 text-sm">
+      <a href="#categories" class="menu-link py-3 border-b border-border hover:text-text-primary">Clothing</a>
+      <a href="#shop" class="menu-link py-3 border-b border-border hover:text-text-primary">New Arrivals</a>
+      <a href="#promo" class="menu-link py-3 border-b border-border hover:text-text-primary">Sales</a>
+      <a href="#shop" data-filter="men" class="nav-filter menu-link py-3 border-b border-border hover:text-text-primary">Men</a>
+      <a href="#shop" data-filter="women" class="nav-filter menu-link py-3 border-b border-border hover:text-text-primary">Women</a>
+      <a href="#shop" data-filter="kids" class="nav-filter menu-link py-3 border-b border-border hover:text-text-primary">Kids</a>
+      <a href="#featured" class="menu-link py-3 border-b border-border hover:text-text-primary">Brand</a>
+      <a href="#about" class="menu-link py-3 hover:text-text-primary">About Us</a>
+    </nav>
+  </aside>
+
+  <main>
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6 lg:pt-16 lg:pb-10">
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          <!-- Copy -->
+          <div class="lg:col-span-5 flex flex-col justify-center order-2 lg:order-1">
+            <p class="text-xs font-medium tracking-[0.2em] uppercase text-text-muted mb-5">Spring / Summer 2026</p>
+            <h1 class="font-serif text-[2.5rem] sm:text-5xl lg:text-[3.5rem] leading-[1.08] font-semibold tracking-tight text-text-primary">
+              Unleash Your Style
+              <span class="block mt-1 text-text-primary/80">Shop the Latest Trends</span>
+            </h1>
+            <p class="text-text-muted text-[15px] leading-relaxed max-w-sm mt-6 mb-9">
+              Curated essentials and statement pieces for a wardrobe that moves with you — refined silhouettes, premium fabrics, everyday ease.
+            </p>
+            <div class="flex flex-wrap items-center gap-4 mb-12">
+              <a href="#shop" class="inline-flex items-center gap-2.5 bg-accent text-white text-sm font-medium pl-7 pr-6 py-3.5 rounded-full hover:bg-neutral-800 transition-colors duration-150">
+                Shop Now
+                <span class="flex items-center justify-center w-7 h-7 rounded-full bg-white/15">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+                </span>
+              </a>
+              <a href="#featured" class="inline-flex items-center gap-2 text-sm font-medium text-text-primary hover:text-text-muted transition-colors duration-150">
+                View lookbook
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+              </a>
+            </div>
+            <div class="flex items-center gap-5 pt-6 border-t border-border">
+              <div class="avatar-stack flex items-center shrink-0">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" alt="" class="w-10 h-10 rounded-full border-2 border-bg object-cover" />
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="" class="w-10 h-10 rounded-full border-2 border-bg object-cover" />
+                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face" alt="" class="w-10 h-10 rounded-full border-2 border-bg object-cover" />
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face" alt="" class="w-10 h-10 rounded-full border-2 border-bg object-cover" />
+              </div>
+              <div>
+                <p class="text-base font-semibold tracking-tight">25 Million+</p>
+                <p class="text-xs text-text-muted mt-0.5">Trusted shoppers worldwide</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main visual -->
+          <div class="lg:col-span-7 order-1 lg:order-2">
+            <div class="relative">
+              <div class="absolute -inset-3 sm:-inset-4 bg-surface rounded-2xl lg:rounded-3xl -z-10"></div>
+              <div class="overflow-hidden rounded-2xl lg:rounded-3xl">
+                <img
+                  src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=900&h=1100&fit=crop"
+                  alt="Model in grey knit sweater seated in studio"
+                  class="hero-main-img w-full aspect-[4/5] sm:aspect-[5/6] lg:aspect-[4/5] object-cover object-top"
+                />
+              </div>
+              <!-- Floating stat -->
+              <div class="absolute bottom-5 left-5 sm:bottom-8 sm:left-8 bg-bg/90 backdrop-blur-sm border border-border rounded-xl px-4 py-3 shadow-float hidden sm:block">
+                <p class="text-xs text-text-muted">New arrivals</p>
+                <p class="text-sm font-medium mt-0.5">240+ styles this week</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom feature row — full width -->
+        <div class="grid sm:grid-cols-3 gap-4 lg:gap-5 mt-8 lg:mt-10">
+          <a href="#shop" class="hero-card group relative overflow-hidden rounded-xl lg:rounded-2xl aspect-[4/3] sm:aspect-[5/4] block">
+            <img
+              src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=480&fit=crop"
+              alt="Cream tailored jacket"
+              class="hero-card-img w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+          </a>
+          <a href="#categories" class="hero-card group relative overflow-hidden rounded-xl lg:rounded-2xl aspect-[4/3] sm:aspect-[5/4] block">
+            <img
+              src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=600&h=480&fit=crop"
+              alt="Curated rack of neutral clothing"
+              class="hero-card-img w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+          </a>
+          <div class="bg-surface border border-border rounded-xl lg:rounded-2xl aspect-[4/3] sm:aspect-[5/4] p-6 sm:p-8 flex flex-col justify-between">
+            <div>
+              <p class="text-xs font-medium tracking-[0.15em] uppercase text-text-muted mb-3">Editorial</p>
+              <p class="font-serif text-xl sm:text-2xl font-medium leading-snug">Models wearing full outfits</p>
+              <p class="text-sm text-text-muted mt-2 leading-relaxed">Complete looks, styled for you.</p>
+            </div>
+            <a href="#shop" class="inline-flex items-center gap-2 bg-accent text-white text-xs font-medium px-5 py-2.5 rounded-full hover:bg-neutral-800 transition-colors duration-150 w-fit mt-4">
+              Shop Now
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Brand logos -->
+    <section class="border-y border-border py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 text-text-muted">
+          <span class="text-xs font-medium tracking-[0.25em] uppercase opacity-50">Graphic Studio</span>
+          <span class="text-xs font-medium tracking-[0.25em] uppercase opacity-50">S. Salvia</span>
+          <span class="text-xs font-medium tracking-[0.25em] uppercase opacity-50">Doric-One</span>
+          <span class="text-xs font-medium tracking-[0.25em] uppercase opacity-50">Furniture Design</span>
+          <span class="text-xs font-medium tracking-[0.25em] uppercase opacity-50">Travel Lookbook</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section id="categories" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+      <h2 class="font-serif text-3xl sm:text-4xl text-center font-semibold mb-12">Our Category List</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <a href="#shop" data-filter="sets" class="category-card group relative overflow-hidden rounded-xl aspect-[3/4] block">
+          <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=800&fit=crop" alt="Set Collection" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+            <h3 class="font-serif text-2xl font-medium">Set Collection</h3>
+            <p class="text-sm text-white/70 mt-1">20 items</p>
+          </div>
+        </a>
+        <a href="#shop" data-filter="tshirts" class="category-card group relative overflow-hidden rounded-xl aspect-[3/4] block">
+          <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=800&fit=crop" alt="T-Shirt" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+            <h3 class="font-serif text-2xl font-medium">T-Shirt</h3>
+            <p class="text-sm text-white/70 mt-1">20 items</p>
+          </div>
+        </a>
+        <a href="#shop" data-filter="hoodies" class="category-card group relative overflow-hidden rounded-xl aspect-[3/4] block sm:col-span-2 lg:col-span-1">
+          <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&h=800&fit=crop" alt="Hoodie Outfit" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+            <h3 class="font-serif text-2xl font-medium">Hoodie Outfit</h3>
+            <p class="text-sm text-white/70 mt-1">20 items</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section id="shop" class="bg-surface py-16 lg:py-24">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="font-serif text-3xl sm:text-4xl font-semibold">Our Products</h2>
+          <p class="text-text-muted text-sm mt-3">Recently added items</p>
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-10">
+          <button data-filter="all" class="filter-btn active px-4 py-2 text-sm rounded-full border border-border bg-bg text-text-primary transition-colors duration-150">All</button>
+          <button data-filter="men" class="filter-btn px-4 py-2 text-sm rounded-full border border-transparent text-text-muted hover:text-text-primary transition-colors duration-150">Men</button>
+          <button data-filter="women" class="filter-btn px-4 py-2 text-sm rounded-full border border-transparent text-text-muted hover:text-text-primary transition-colors duration-150">Women</button>
+          <button data-filter="kids" class="filter-btn px-4 py-2 text-sm rounded-full border border-transparent text-text-muted hover:text-text-primary transition-colors duration-150">Kids</button>
+        </div>
+
+        <div id="products-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <!-- Products injected by JS -->
+        </div>
+
+        <p id="no-results" class="hidden text-center text-text-muted text-sm py-12">No products found. Try a different search or filter.</p>
+      </div>
+    </section>
+
+    <!-- Promo banner -->
+    <section id="promo" class="bg-surface-alt py-16 lg:py-20 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-10 items-center">
+          <div>
+            <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold leading-tight mb-6">Get 50% Off</h2>
+            <p class="text-text-muted text-base mb-8 max-w-sm">Limited time offer on selected seasonal styles. Refresh your wardrobe for less.</p>
+            <a href="#shop" class="inline-flex items-center gap-2 bg-accent text-white text-sm font-medium px-8 py-3.5 rounded-full hover:bg-neutral-800 transition-colors duration-150">
+              Shop Now
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+            </a>
+          </div>
+          <div class="relative flex justify-center lg:justify-end gap-4">
+            <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&h=550&fit=crop" alt="Model in plaid shirt" class="w-44 sm:w-52 h-64 sm:h-80 object-cover rounded-xl -rotate-3 shadow-float" />
+            <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=400&h=550&fit=crop" alt="Model in red polo" class="w-44 sm:w-52 h-64 sm:h-80 object-cover rounded-xl rotate-2 shadow-float mt-8" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured collections -->
+    <section id="featured" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+      <div class="text-center mb-12">
+        <h2 class="font-serif text-3xl sm:text-4xl font-semibold">Featured Collections</h2>
+        <p class="text-text-muted text-sm mt-3">Handpicked styles for the season</p>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-6">
+        <div class="relative overflow-hidden rounded-xl aspect-[3/4] lg:aspect-auto lg:h-[560px]">
+          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&h=900&fit=crop" alt="Model in light blue polo" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
+            <p class="text-xs uppercase tracking-widest text-white/70 mb-2">New Season</p>
+            <h3 class="font-serif text-2xl font-medium">Essential Knitwear</h3>
+            <a href="#shop" class="inline-flex items-center gap-2 mt-4 text-sm font-medium underline underline-offset-4 hover:no-underline">Explore collection</a>
+          </div>
+        </div>
+        <div class="grid grid-rows-2 gap-6">
+          <div class="relative overflow-hidden rounded-xl h-64 lg:h-auto">
+            <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=400&fit=crop" alt="Striped knit texture" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+              <h3 class="font-serif text-xl font-medium">Textured Layers</h3>
+            </div>
+          </div>
+          <div class="relative overflow-hidden rounded-xl h-64 lg:h-auto">
+            <img src="https://images.unsplash.com/photo-1620799140408-edc46dcb1626?w=600&h=400&fit=crop" alt="Casual outfit detail" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+              <h3 class="font-serif text-xl font-medium">Weekend Casual</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="bg-surface border-t border-border py-16 lg:py-24">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="font-serif text-3xl font-semibold mb-4">About STYLISHIVE</h2>
+        <p class="text-text-muted leading-relaxed">
+          We believe style is personal. Since 2018, STYLISHIVE has curated premium fashion for those who value quality, craftsmanship, and timeless design. Every piece in our collection is selected to help you express your unique identity.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="help" class="bg-surface-alt border-t border-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div>
+          <h4 class="text-sm font-medium mb-4">Company</h4>
+          <ul class="space-y-3 text-sm text-text-muted">
+            <li><a href="#about" class="hover:text-text-primary transition-colors duration-150">About Fresh</a></li>
+            <li><a href="#help" class="hover:text-text-primary transition-colors duration-150">Contact Us</a></li>
+            <li><a href="#" class="hover:text-text-primary transition-colors duration-150">Careers</a></li>
+            <li><a href="#blog" class="hover:text-text-primary transition-colors duration-150">News &amp; Blogs</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-medium mb-4">Shop</h4>
+          <ul class="space-y-3 text-sm text-text-muted">
+            <li><a href="#help" class="hover:text-text-primary transition-colors duration-150">Help Center</a></li>
+            <li><a href="#help" class="hover:text-text-primary transition-colors duration-150">Support Team</a></li>
+            <li><a href="#" class="hover:text-text-primary transition-colors duration-150">Community</a></li>
+            <li><a href="#" class="hover:text-text-primary transition-colors duration-150">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-medium mb-4">Menu</h4>
+          <ul class="space-y-3 text-sm text-text-muted">
+            <li><a href="#shop" data-filter="men" class="nav-filter hover:text-text-primary transition-colors duration-150">Men</a></li>
+            <li><a href="#shop" data-filter="women" class="nav-filter hover:text-text-primary transition-colors duration-150">Women</a></li>
+            <li><a href="#shop" data-filter="kids" class="nav-filter hover:text-text-primary transition-colors duration-150">Kids</a></li>
+            <li><a href="#shop" class="hover:text-text-primary transition-colors duration-150">New Arrivals</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-medium mb-4">Follow Us</h4>
+          <ul class="space-y-3 text-sm text-text-muted">
+            <li><a href="#" class="hover:text-text-primary transition-colors duration-150">Instagram</a></li>
+            <li><a href="#" class="hover:text-text-primary transition-colors duration-150">Pinterest</a></li>
+            <li><a href="#" class="hover:text-text-primary transition-colors duration-150">Twitter</a></li>
+            <li><a href="#" class="hover:text-text-primary transition-colors duration-150">Facebook</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-text-muted">&copy; 2026 STYLISHIVE. All rights reserved.</p>
+        <div class="flex items-center gap-4 text-text-muted">
+          <a href="#" class="hover:text-text-primary transition-colors duration-150" aria-label="Instagram">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.27-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          </a>
+          <a href="#" class="hover:text-text-primary transition-colors duration-150" aria-label="Pinterest">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.403.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/></svg>
+          </a>
+          <a href="#" class="hover:text-text-primary transition-colors duration-150" aria-label="Twitter">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart panel -->
+  <div id="cart-overlay" class="fixed inset-0 bg-black/40 z-50 hidden opacity-0"></div>
+  <aside id="cart-panel" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-bg z-50 shadow-float translate-x-full flex flex-col">
+    <div class="flex items-center justify-between p-6 border-b border-border">
+      <h3 class="font-medium text-base">Shopping Bag</h3>
+      <button id="cart-close" class="p-2 text-text-muted hover:text-text-primary transition-colors duration-150" aria-label="Close cart">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+      <p id="cart-empty" class="text-sm text-text-muted text-center py-12">Your bag is empty</p>
+    </div>
+    <div id="cart-footer" class="border-t border-border p-6 hidden">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-sm text-text-muted">Subtotal</span>
+        <span id="cart-subtotal" class="text-base font-medium">$0.00</span>
+      </div>
+      <button id="checkout-btn" class="w-full bg-accent text-white text-sm font-medium py-3.5 rounded-full hover:bg-neutral-800 transition-colors duration-150">
+        Checkout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-accent text-white text-sm px-6 py-3 rounded-full shadow-float z-50 opacity-0 pointer-events-none transition-opacity duration-200">
+    Added to bag
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, name: 'Plain White Shirt', price: 29, category: 'men', type: 'tshirts', image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500&h=650&fit=crop' },
+      { id: 2, name: 'Cream Knit Cardigan', price: 89, category: 'women', type: 'sets', image: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&h=650&fit=crop' },
+      { id: 3, name: 'Olive Field Jacket', price: 129, category: 'men', type: 'sets', image: 'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=500&h=650&fit=crop' },
+      { id: 4, name: 'Charcoal Hoodie', price: 65, category: 'men', type: 'hoodies', image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&h=650&fit=crop' },
+      { id: 5, name: 'Striped Knit Sweater', price: 79, category: 'women', type: 'sets', image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=500&h=650&fit=crop' },
+      { id: 6, name: 'Classic Black Tee', price: 35, category: 'women', type: 'tshirts', image: 'https://images.unsplash.com/photo-1562157873-818bc0726fc0?w=500&h=650&fit=crop' },
+      { id: 7, name: 'Kids Denim Jacket', price: 55, category: 'kids', type: 'sets', image: 'https://images.unsplash.com/photo-1519238263530-99bdd886daf7?w=500&h=650&fit=crop' },
+      { id: 8, name: 'Kids Graphic Hoodie', price: 42, category: 'kids', type: 'hoodies', image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500&h=650&fit=crop' },
+      { id: 9, name: 'Linen Blend Shirt', price: 49, category: 'men', type: 'tshirts', image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&h=650&fit=crop' },
+    ];
+
+    let cart = JSON.parse(localStorage.getItem('stylishive-cart') || '[]');
+    let activeFilter = 'all';
+    let searchQuery = '';
+
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    function saveCart() {
+      localStorage.setItem('stylishive-cart', JSON.stringify(cart));
+      updateCartUI();
+    }
+
+    function formatPrice(n) {
+      return '$' + n.toFixed(2);
+    }
+
+    function showToast(msg) {
+      const toast = $('#toast');
+      toast.textContent = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      setTimeout(() => toast.classList.add('opacity-0', 'pointer-events-none'), 2000);
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      if (!product) return;
+      const existing = cart.find(i => i.id === id);
+      if (existing) existing.qty++;
+      else cart.push({ id: product.id, name: product.name, price: product.price, image: product.image, qty: 1 });
+      saveCart();
+      showToast('Added to bag');
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(i => i.id !== id);
+      saveCart();
+    }
+
+    function updateQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) removeFromCart(id);
+      else saveCart();
+    }
+
+    function updateCartUI() {
+      const count = cart.reduce((s, i) => s + i.qty, 0);
+      const badge = $('#cart-count');
+      const dot = $('#cart-badge');
+      if (count > 0) {
+        badge.textContent = count;
+        badge.classList.remove('hidden');
+        dot.classList.add('hidden');
+      } else {
+        badge.classList.add('hidden');
+        dot.classList.add('hidden');
+      }
+
+      const container = $('#cart-items');
+      const empty = $('#cart-empty');
+      const footer = $('#cart-footer');
+
+      if (cart.length === 0) {
+        container.innerHTML = '';
+        container.appendChild(empty);
+        empty.classList.remove('hidden');
+        footer.classList.add('hidden');
+        return;
+      }
+
+      empty.classList.add('hidden');
+      footer.classList.remove('hidden');
+
+      const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      $('#cart-subtotal').textContent = formatPrice(subtotal);
+
+      container.innerHTML = cart.map(item => `
+        <div class="flex gap-4">
+          <img src="${item.image}" alt="${item.name}" class="w-20 h-24 object-cover rounded-lg bg-surface" />
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium line-clamp-1">${item.name}</p>
+            <p class="text-sm text-text-muted mt-1">${formatPrice(item.price)}</p>
+            <div class="flex items-center gap-3 mt-3">
+              <button onclick="updateQty(${item.id}, -1)" class="w-7 h-7 flex items-center justify-center border border-border rounded-sm text-sm hover:bg-surface transition-colors duration-150" aria-label="Decrease quantity">−</button>
+              <span class="text-sm w-4 text-center">${item.qty}</span>
+              <button onclick="updateQty(${item.id}, 1)" class="w-7 h-7 flex items-center justify-center border border-border rounded-sm text-sm hover:bg-surface transition-colors duration-150" aria-label="Increase quantity">+</button>
+            </div>
+          </div>
+          <button onclick="removeFromCart(${item.id})" class="text-text-muted hover:text-text-primary self-start p-1 transition-colors duration-150" aria-label="Remove item">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function getFilteredProducts() {
+      return products.filter(p => {
+        const matchFilter = activeFilter === 'all' || p.category === activeFilter || p.type === activeFilter;
+        const matchSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchFilter && matchSearch;
+      });
+    }
+
+    function renderProducts() {
+      const filtered = getFilteredProducts();
+      const grid = $('#products-grid');
+      const noResults = $('#no-results');
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        noResults.classList.remove('hidden');
+        return;
+      }
+
+      noResults.classList.add('hidden');
+      grid.innerHTML = filtered.map(p => `
+        <article class="product-card group" data-id="${p.id}">
+          <div class="bg-surface-alt rounded-xl overflow-hidden mb-4 relative">
+            <img src="${p.image}" alt="${p.name}" class="w-full aspect-[3/4] object-cover" loading="lazy" />
+            <button onclick="addToCart(${p.id})" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-medium px-5 py-2.5 rounded-full opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-200 whitespace-nowrap">
+              Add to Bag
+            </button>
+          </div>
+          <h3 class="text-sm font-medium">${p.name}</h3>
+          <p class="text-sm text-text-muted mt-1">${formatPrice(p.price)}</p>
+        </article>
+      `).join('');
+    }
+
+    function setFilter(filter) {
+      activeFilter = filter;
+      $$('.filter-btn').forEach(btn => {
+        const isActive = btn.dataset.filter === filter;
+        btn.classList.toggle('active', isActive);
+        btn.classList.toggle('border-border', isActive);
+        btn.classList.toggle('bg-bg', isActive);
+        btn.classList.toggle('text-text-primary', isActive);
+        btn.classList.toggle('border-transparent', !isActive);
+        btn.classList.toggle('text-text-muted', !isActive);
+      });
+      renderProducts();
+    }
+
+    // Panel helpers
+    function openPanel(panel, overlay) {
+      overlay.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        overlay.classList.remove('opacity-0');
+        panel.classList.remove('translate-x-full');
+      });
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePanel(panel, overlay) {
+      overlay.classList.add('opacity-0');
+      panel.classList.add('translate-x-full');
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        document.body.style.overflow = '';
+      }, 200);
+    }
+
+    // Event listeners
+    $('#cart-toggle').addEventListener('click', () => openPanel($('#cart-panel'), $('#cart-overlay')));
+    $('#cart-close').addEventListener('click', () => closePanel($('#cart-panel'), $('#cart-overlay')));
+    $('#cart-overlay').addEventListener('click', () => closePanel($('#cart-panel'), $('#cart-overlay')));
+
+    $('#menu-toggle').addEventListener('click', () => openPanel($('#mobile-menu'), $('#mobile-menu-overlay')));
+    $('#menu-close').addEventListener('click', () => closePanel($('#mobile-menu'), $('#mobile-menu-overlay')));
+    $('#mobile-menu-overlay').addEventListener('click', () => closePanel($('#mobile-menu'), $('#mobile-menu-overlay')));
+
+    $$('.menu-link').forEach(link => {
+      link.addEventListener('click', () => closePanel($('#mobile-menu'), $('#mobile-menu-overlay')));
+    });
+
+    $('#search-toggle').addEventListener('click', () => {
+      const bar = $('#search-bar');
+      bar.classList.toggle('hidden');
+      if (!bar.classList.contains('hidden')) $('#search-input').focus();
+    });
+
+    $('#search-input').addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderProducts();
+    });
+
+    $('#search-btn').addEventListener('click', () => {
+      searchQuery = $('#search-input').value;
+      renderProducts();
+      document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    $$('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => setFilter(btn.dataset.filter));
+    });
+
+    $$('.nav-filter').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const filter = link.dataset.filter;
+        if (filter) {
+          e.preventDefault();
+          setFilter(filter);
+          document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    $$('[data-filter]').forEach(el => {
+      if (el.classList.contains('nav-filter')) return;
+      el.addEventListener('click', (e) => {
+        const filter = el.dataset.filter;
+        if (filter && el.closest('#categories')) {
+          e.preventDefault();
+          setFilter(filter);
+          document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    $('#checkout-btn').addEventListener('click', () => {
+      if (cart.length === 0) return;
+      showToast('Checkout coming soon!');
+    });
+
+    // Init
+    renderProducts();
+    updateCartUI();
+  </script>
+</body>
+</html>
